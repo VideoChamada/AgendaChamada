@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atendimento VIP - Vídeo Chamada</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0a0f2c 0%, #11173d 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        /* Perfil */
+        .profile-section {
+            margin-bottom: 30px;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #1e4bff;
+            box-shadow: 0 0 30px rgba(30, 75, 255, 0.5);
+            margin: 0 auto 15px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: url('https://i.postimg.cc/yx37DnFC/IMG-20251010-122706-764.jpg'); /* <<< COLOQUE SUA FOTO AQUI */
+        }
+
+        .main-button {
+            background: linear-gradient(45deg, #1e4bff, #001aff);
+            padding: 18px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 18px;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #11173d 0%, #0f1550 100%);
+            padding: 30px;
+            width: 90%;
+            max-width: 420px;
+            margin: 15% auto;
+            border-radius: 18px;
+            text-align: center;
+        }
+
+        .pix-button {
+            background: linear-gradient(45deg, #00c851, #007e33);
+            padding: 15px;
+            width: 100%;
+            border-radius: 12px;
+            border: none;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .close-button {
+            margin-top: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #ccc;
+        }
+
+        .skip-button {
+            background: linear-gradient(45deg, #ff6b35, #ff8f2d);
+            padding: 12px 25px;
+            width: 100%;
+            border-radius: 12px;
+            border: none;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .phone-section {
+            display: none;
+            background: rgba(17, 23, 61, 0.8);
+            padding: 25px;
+            border-radius: 18px;
+            margin-top: 25px;
+            border: 1px solid rgba(30, 75, 255, 0.3);
+        }
+
+        .phone-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #1e4bff;
+            border-radius: 12px;
+            background: rgba(10, 15, 44, 0.8);
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .queue-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-top: 10px;
+        }
+
+        .plan-box {
+            background: rgba(255,255,255,0.08);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+        }
+
+        .plan-box:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .plan-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .plan-price {
+            font-size: 24px;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="profile-section">
+        <div class="profile-image"></div>
+        <h1 class="profile-name">Chamada De Video Whatsapp</h1>
+        <p class="profile-subtitle">E ainda leve 65 Fotos E 48 Videos de BRINDE!👇👇👇</p>
+        <button class="main-button" onclick="abrirModalCompra()">Entrar na Fila</button>
+    </div>
+
+    <div class="phone-section" id="phoneSection">
+        <h3>Digite seu número (WHATSAPP)</h3>
+        <input type="tel" id="phoneInput" class="phone-input" placeholder="(11) 99999-9999">
+        <button class="main-button" onclick="cadastrarNumero()">Cadastrar Número</button>
+    </div>
+
+</div>
+
+<!-- Modal de Pagamento -->
+<div id="modalCompra" class="modal">
+    <div class="modal-content">
+        <h2>Vídeo-Chamada VIP</h2>
+        <div class="price">R$ 65,00</div>
+
+        <button class="pix-button" onclick="finalizarPix()">Pagar com Pix</button>
+        <button class="close-button" onclick="fecharModalCompra()">Fechar</button>
+    </div>
+</div>
+
+<!-- Modal Confirmação -->
+<div id="modalConfirmacao" class="modal">
+    <div class="modal-content">
+        <h2>Número cadastrado!</h2>
+        <p>Você será chamado em breve.</p>
+
+        <p style="margin-top:20px;">Sua posição na fila:</p>
+        <div class="queue-number" id="filaNumero">...</div>
+
+        <button class="skip-button" onclick="abrirModalPlanos()">Pular Fila 🚀</button>
+        <button class="close-button" onclick="fecharModalConfirmacao()">Fechar</button>
+    </div>
+</div>
+
+<!-- Modal Planos -->
+<div id="modalPlanos" class="modal">
+    <div class="modal-content">
+        <h2>Pular Fila</h2>
+
+        <div class="plan-box" onclick="comprarPlano('turbo')">
+            <div class="plan-title">Pular 10 posição</div>
+            <div class="plan-price">R$ 9,00</div>
+        </div>
+
+        <div class="plan-box" onclick="comprarPlano('ultra')">
+            <div class="plan-title">Pular 80 Numeros</div>
+            <div class="plan-price">R$ 35,00</div>
+        </div>
+
+        <div class="plan-box" onclick="comprarPlano('diamante')">
+            <div class="plan-title">TOPO DA FILA</div>
+            <div class="plan-price">R$ 120,00</div>
+        </div>
+
+        <button class="close-button" onclick="fecharModalPlanos()">Fechar</button>
+    </div>
+</div>
+
+
+<script>
+/* Abrir Modal */
+function abrirModalCompra() {
+    document.getElementById('modalCompra').style.display = 'block';
+}
+
+/* Fechar manual */
+function fecharModalCompra() {
+    document.getElementById('modalCompra').style.display = 'none';
+}
+
+/* Pagar com Pix */
+function finalizarPix() {
+    localStorage.setItem("voltouDoPix", "sim");
+
+    window.open(
+        'https://app.pushinpay.com.br/#/service/pay/A05FFA83-F144-4CB9-911E-217FC18F1633',
+        '_blank',
+        'noopener,noreferrer'
+    );
+}
+
+/* Detecta voltar do checkout */
+document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) verificarRetornoDoPix();
+});
+window.addEventListener("pageshow", verificarRetornoDoPix);
+
+function verificarRetornoDoPix() {
+    if (localStorage.getItem("voltouDoPix") === "sim") {
+
+        localStorage.removeItem("voltouDoPix");
+
+        document.getElementById("modalCompra").style.display = "none";
+        document.getElementById("phoneSection").style.display = "block";
+    }
+}
+
+/* Cadastrar número */
+function cadastrarNumero() {
+    let v = document.getElementById('phoneInput').value.trim();
+    if (v === "") {
+        alert("Digite seu número!");
+        return;
+    }
+
+    let fila = Math.floor(Math.random() * 1000) + 1;
+    document.getElementById("filaNumero").textContent = fila;
+
+    document.getElementById("modalConfirmacao").style.display = "block";
+}
+
+/* Fechar popups */
+function fecharModalConfirmacao() {
+    document.getElementById("modalConfirmacao").style.display = "none";
+}
+
+function abrirModalPlanos() {
+    document.getElementById("modalConfirmacao").style.display = "none";
+    document.getElementById("modalPlanos").style.display = "block";
+}
+
+function fecharModalPlanos() {
+    document.getElementById("modalPlanos").style.display = "none";
+}
+
+/* Redirecionar planos */
+function comprarPlano(plano) {
+    const urls = {
+        "turbo": "https://app.pushinpay.com.br/#/service/pay/A060EABC-B802-4DB7-A486-9CE2A857590E",
+        "ultra": "https://app.pushinpay.com.br/#/service/pay/A060EBA7-8875-4996-929F-1070D3CD4A3E",
+        "diamante": "https://app.pushinpay.com.br/#/service/pay/A060EC30-269F-472F-95D3-A9B576132828"
+    };
+
+    window.open(urls[plano], "_blank");
+}
+
+/* Máscara */
+document.getElementById("phoneInput").addEventListener("input", function(e) {
+    let v = e.target.value.replace(/\D/g, "");
+    if (v.length >= 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+    else if (v.length >= 7) v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3");
+    else if (v.length >= 3) v = v.replace(/(\d{2})(\d{0,5})/, "($1) $2");
+    e.target.value = v;
+});
+</script>
+
+</body>
+</html>

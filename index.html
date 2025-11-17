@@ -1,349 +1,463 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atendimento VIP - Vídeo Chamada</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<header class="top-header">
-    <img src="https://i.postimg.cc/TY7s55rJ/Chat-GPT-Image-17-de-nov-de-2025-11-51-23.png" class="logo-header">
-</header>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Atendimento VIP - Vídeo Chamada</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1:#0a0f2c;
+      --bg-2:#0f1550;
+      --accent:#1e4bff;
+      --accent-2:#00d4ff;
+      --glass: rgba(20,35,120,0.55);
+      --neon-shadow: 0 6px 30px rgba(30,75,255,0.18), 0 0 40px rgba(30,75,255,0.06) inset;
+      --card: rgba(255,255,255,0.03);
+      --muted: rgba(255,255,255,0.7);
+      --max-width:420px;
+    }
 
-    <style>
-        .top-header {
-    width: 100%;
-    padding: 12px 18px;
-    display: flex;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background: rgba(10, 15, 44, 0.4);
-    backdrop-filter: blur(6px);
-    z-index: 999;
-}
+    /* Reset + base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Poppins',sans-serif;
+      background: linear-gradient(135deg,var(--bg-1) 0%, #11173d 100%);
+      color:white;
+      -webkit-font-smoothing:antialiased;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:28px 16px;
+      min-height:100vh;
+    }
 
-.logo-header {
-    height: 45px;       /* aumenta a altura */
-    width: 180px;       /* aumenta para os lados */
-    border-radius: 12px;
-    object-fit: cover;  /* preenche sem distorcer */
-}
+    /* Top Header */
+    .top-header{
+      position:fixed;
+      left:0;
+      top:0;
+      width:100%;
+      z-index:9999;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 18px;
+      background: linear-gradient(180deg, rgba(12,20,60,0.72), rgba(6,10,30,0.30));
+      border-bottom:1px solid rgba(30,75,255,0.08);
+      box-shadow: 0 8px 40px rgba(5,8,25,0.6), 0 0 22px rgba(30,75,255,0.06);
+      backdrop-filter: blur(8px);
+    }
 
+    .top-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0a0f2c 0%, #11173d 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            margin: 0;
-        }
+    .logo-header{
+      height:56px;
+      width:auto;
+      max-width:260px;       /* controle lateral máximo */
+      border-radius:14px;
+      object-fit:cover;
+      padding:6px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 6px 20px rgba(30,75,255,0.14);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .logo-header:hover{ transform: translateY(-3px); box-shadow: 0 12px 30px rgba(30,75,255,0.22); }
 
-        .container {
-            text-align: center;
-            padding: 20px;
-            width: 100%;
-            max-width: 420px;
-        }
+    /* Optional right area for header (placeholder) */
+    .header-right{
+      margin-left:auto;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
 
-        /* Perfil */
-        .profile-section {
-            margin-bottom: 30px;
-        }
+    .badge{
+      font-size:13px;
+      padding:8px 12px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(30,75,255,0.14), rgba(0,212,255,0.06));
+      border:1px solid rgba(30,75,255,0.09);
+      color:var(--muted);
+    }
 
-        .profile-image {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 3px solid #1e4bff;
-            box-shadow: 0 0 30px rgba(30, 75, 255, 0.5);
-            margin: 0 auto 15px;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-image: url('https://i.postimg.cc/yx37DnFC/IMG-20251010-122706-764.jpg'); /* <<< COLOQUE SUA FOTO AQUI */
-        }
+    /* Main container */
+    .page-wrap{
+      width:100%;
+      max-width:var(--max-width);
+      margin-top:92px; /* leave space for fixed header */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding-bottom:36px;
+    }
 
-        .main-button {
-            background: linear-gradient(45deg, #1e4bff, #001aff);
-            padding: 18px;
-            width: 100%;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 18px;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
+    .container{
+      width:100%;
+      padding:22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:20px;
+      border: 1px solid rgba(30,75,255,0.06);
+      box-shadow: var(--neon-shadow);
+      text-align:center;
+    }
 
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            inset: 0;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(4px);
-        }
+    .profile-image{
+      width:128px;
+      height:128px;
+      border-radius:50%;
+      border: 4px solid rgba(30,75,255,0.16);
+      background-size:cover;
+      background-position:center;
+      margin: 6px auto 12px;
+      box-shadow: 0 8px 30px rgba(30,75,255,0.16);
+    }
 
-        .modal-content {
-            background: linear-gradient(135deg, #11173d 0%, #0f1550 100%);
-            padding: 30px;
-            width: 90%;
-            max-width: 420px;
-            margin: 15% auto;
-            border-radius: 18px;
-            text-align: center;
-        }
+    h1.profile-name{
+      margin:6px 0 6px;
+      font-size:20px;
+      letter-spacing:0.2px;
+    }
+    p.profile-subtitle{
+      margin:0 0 16px;
+      font-size:14px;
+      color:rgba(255,255,255,0.85);
+    }
 
-        .pix-button {
-            background: linear-gradient(45deg, #00c851, #007e33);
-            padding: 15px;
-            width: 100%;
-            border-radius: 12px;
-            border: none;
-            font-size: 18px;
-            font-weight: 600;
-            color: white;
-            margin-top: 20px;
-            cursor: pointer;
-        }
+    /* Buttons */
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      border:0;
+      padding:14px 18px;
+      font-weight:700;
+      border-radius:14px;
+      cursor:pointer;
+      transition:transform .12s ease, box-shadow .12s ease;
+    }
+    .btn:active{ transform:translateY(1px) }
 
-        .close-button {
-            margin-top: 15px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 10px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            color: #ccc;
-        }
+    .btn-primary{
+      width:100%;
+      background: linear-gradient(90deg, #1e4bff, #001aff);
+      box-shadow: 0 18px 40px rgba(30,75,255,0.16), 0 0 24px rgba(0,212,255,0.03) inset;
+      color:white;
+      font-size:18px;
+    }
+    .btn-primary:hover{
+      transform:translateY(-3px);
+      box-shadow: 0 22px 48px rgba(30,75,255,0.22);
+    }
 
-        .skip-button {
-            background: linear-gradient(45deg, #ff6b35, #ff8f2d);
-            padding: 12px 25px;
-            width: 100%;
-            border-radius: 12px;
-            border: none;
-            font-size: 18px;
-            font-weight: 600;
-            color: white;
-            margin-top: 20px;
-            cursor: pointer;
-        }
+    .btn-ghost{
+      width:100%;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.08);
+      color:rgba(255,255,255,0.9);
+      font-weight:600;
+      padding:12px 16px;
+      border-radius:12px;
+    }
 
-        .phone-section {
-            display: none;
-            background: rgba(17, 23, 61, 0.8);
-            padding: 25px;
-            border-radius: 18px;
-            margin-top: 25px;
-            border: 1px solid rgba(30, 75, 255, 0.3);
-        }
+    /* Phone section */
+    .phone-section{
+      display:none;
+      margin-top:18px;
+      padding:18px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(10,15,44,0.6), rgba(6,8,30,0.45));
+      border:1px solid rgba(30,75,255,0.07);
+    }
+    .phone-input{
+      width:100%;
+      padding:14px;
+      border-radius:12px;
+      border:2px solid rgba(30,75,255,0.16);
+      background: rgba(10,15,44,0.65);
+      color:white;
+      font-size:15px;
+      margin-bottom:12px;
+      outline:none;
+    }
+    .phone-input:focus{ box-shadow: 0 6px 28px rgba(30,75,255,0.06); border-color:var(--accent); }
 
-        .phone-input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #1e4bff;
-            border-radius: 12px;
-            background: rgba(10, 15, 44, 0.8);
-            color: white;
-            margin-bottom: 20px;
-        }
+    /* Queue number */
+    .queue-number{
+      font-size:44px;
+      font-weight:800;
+      color:var(--accent-2);
+      margin:8px 0 12px;
+      letter-spacing:1px;
+      text-shadow: 0 6px 28px rgba(0,212,255,0.06);
+    }
 
-        .queue-number {
-            font-size: 48px;
-            font-weight: 700;
-            color: #00d4ff;
-            margin-top: 10px;
-        }
+    /* Modals (centered) */
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:2000;
+      background: rgba(2,6,23,0.6);
+      backdrop-filter: blur(4px);
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+    .modal-content{
+      width:100%;
+      max-width:480px;
+      background: linear-gradient(180deg, #0f1550, #081033);
+      border-radius:16px;
+      padding:22px;
+      border:1px solid rgba(30,75,255,0.08);
+      box-shadow: 0 18px 60px rgba(2,8,40,0.8);
+      text-align:center;
+    }
+    .modal h2{ margin:6px 0 10px }
 
-        .plan-box {
-            background: rgba(255,255,255,0.08);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255,255,255,0.2);
-            cursor: pointer;
-        }
+    .plan-box{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:14px;
+      margin:10px 0;
+      border-radius:12px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      cursor:pointer;
+    }
+    .plan-box:hover{ transform:translateY(-4px); box-shadow: 0 18px 46px rgba(30,75,255,0.08); }
 
-        .plan-box:hover {
-            background: rgba(255,255,255,0.15);
-        }
+    /* small screens */
+    @media (max-width:420px){
+      .logo-header{ height:48px; max-width:180px; border-radius:12px }
+      .page-wrap{ margin-top:80px }
+      .profile-image{ width:110px; height:110px }
+      .queue-number{ font-size:36px }
+    }
 
-        .plan-title {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .plan-price {
-            font-size: 24px;
-            font-weight: 600;
-            color: #00d4ff;
-            margin-top: 8px;
-        }
-    </style>
+    @media (max-width:340px){
+      .logo-header{ max-width:160px; height:44px }
+      .container{ padding:16px }
+      .profile-image{ width:96px; height:96px }
+    }
+  </style>
 </head>
-
 <body>
-<div class="container">
- 
 
-
-    <div class="profile-section">
-        <div class="profile-image"></div>
-        <h1 class="profile-name">Chamada De Video Whatsapp</h1>
-        <p class="profile-subtitle">E ainda leve 65 Fotos E 48 Videos de BRINDE!👇👇👇</p>
-        <button class="main-button" onclick="abrirModalCompra()">WHATSAPP</button>
+  <!-- Header -->
+  <header class="top-header" role="banner">
+    <div class="top-left">
+      <img alt="Logo do site" class="logo-header" src="https://i.postimg.cc/TY7s55rJ/Chat-GPT-Image-17-de-nov-de-2025-11-51-23.png">
+      <!-- Small title near logo (optional) -->
+      <div style="display:flex;flex-direction:column;line-height:1;">
+        <div style="font-weight:700;font-size:15px">Atendimento VIP</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.75)">Vídeo Chamada - WhatsApp</div>
+      </div>
     </div>
 
-    <div class="phone-section" id="phoneSection">
-        <h3>Digite seu número (WHATSAPP)</h3>
-        <input type="tel" id="phoneInput" class="phone-input" placeholder="(11) 99999-9999">
-        <button class="main-button" onclick="cadastrarNumero()">Cadastrar Número</button>
+    <div class="header-right" aria-hidden="true">
+      <div class="badge">Online</div>
     </div>
+  </header>
 
-</div>
+  <!-- Page content -->
+  <div class="page-wrap">
+    <main class="container" role="main" aria-labelledby="profileHeading">
 
-<!-- Modal de Pagamento -->
-<div id="modalCompra" class="modal">
+      <div class="profile-image" aria-hidden="true" style="background-image:url('https://i.postimg.cc/yx37DnFC/IMG-20251010-122706-764.jpg')"></div>
+
+      <h1 id="profileHeading" class="profile-name">Chamada De Vídeo Whatsapp</h1>
+      <p class="profile-subtitle">E ainda leve <strong>65 Fotos</strong> e <strong>48 Vídeos</strong> de BRINDE! 👇👇👇</p>
+
+      <button class="btn btn-primary" onclick="abrirModalCompra()" aria-label="Entrar na fila e pagar com PIX">
+        <span>WHATSAPP</span>
+      </button>
+
+      <div id="phoneSection" class="phone-section" aria-hidden="true">
+        <h3 style="margin:0 0 10px">Digite seu número (WHATSAPP)</h3>
+        <input id="phoneInput" class="phone-input" type="tel" placeholder="(11) 99999-9999" aria-label="Telefone WhatsApp">
+        <button class="btn btn-primary" onclick="cadastrarNumero()">Cadastrar Número</button>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Modal Compra -->
+  <div id="modalCompra" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-content">
-        <h2>Vídeo-Chamada VIP</h2>
-        <div class="price">R$ 65,00</div>
-
-        <button class="pix-button" onclick="finalizarPix()">Pagar com Pix</button>
-        <button class="close-button" onclick="fecharModalCompra()">Fechar</button>
+      <h2>Vídeo-Chamada VIP</h2>
+      <p style="font-size:20px;margin:6px 0 8px;color:var(--accent-2);font-weight:700">R$ 65,00</p>
+      <button class="btn btn-primary" onclick="finalizarPix()">Pagar com Pix</button>
+      <button class="btn btn-ghost" onclick="fecharModalCompra()" style="margin-top:12px">Fechar</button>
     </div>
-</div>
+  </div>
 
-<!-- Modal Confirmação -->
-<div id="modalConfirmacao" class="modal">
+  <!-- Modal Confirmacao -->
+  <div id="modalConfirmacao" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-content">
-        <h2>Número cadastrado!</h2>
-        <p>Você será chamado em breve.</p>
-
-        <p style="margin-top:20px;">Sua posição na fila:</p>
-        <div class="queue-number" id="filaNumero">...</div>
-
-        <button class="skip-button" onclick="abrirModalPlanos()">Pular Fila 🚀</button>
-        <button class="close-button" onclick="fecharModalConfirmacao()">Fechar</button>
+      <h2>Número cadastrado!</h2>
+      <p>Você será chamado em breve.</p>
+      <p style="margin-top:10px">Sua posição na fila:</p>
+      <div id="filaNumero" class="queue-number">...</div>
+      <button class="btn btn-primary" onclick="abrirModalPlanos()">Pular Fila 🚀</button>
+      <button class="btn btn-ghost" onclick="fecharModalConfirmacao()" style="margin-top:10px">Fechar</button>
     </div>
-</div>
+  </div>
 
-<!-- Modal Planos -->
-<div id="modalPlanos" class="modal">
+  <!-- Modal Planos -->
+  <div id="modalPlanos" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-content">
-        <h2>Pular Fila</h2>
+      <h2>Pular Fila</h2>
 
-        <div class="plan-box" onclick="comprarPlano('turbo')">
-            <div class="plan-title">Pular 10 posição</div>
-            <div class="plan-price">R$ 9,00</div>
+      <div class="plan-box" onclick="comprarPlano('turbo')" role="button" tabindex="0">
+        <div>
+          <div style="font-weight:800">Pular 10 posições</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.75)">Rápido e econômico</div>
         </div>
+        <div style="font-weight:800;color:var(--accent-2)">R$ 9,00</div>
+      </div>
 
-        <div class="plan-box" onclick="comprarPlano('ultra')">
-            <div class="plan-title">Pular 80 Numeros</div>
-            <div class="plan-price">R$ 35,00</div>
+      <div class="plan-box" onclick="comprarPlano('ultra')" role="button" tabindex="0">
+        <div>
+          <div style="font-weight:800">Pular 80 números</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.75)">Mais visibilidade</div>
         </div>
+        <div style="font-weight:800;color:var(--accent-2)">R$ 35,00</div>
+      </div>
 
-        <div class="plan-box" onclick="comprarPlano('diamante')">
-            <div class="plan-title">TOPO DA FILA</div>
-            <div class="plan-price">R$ 120,00</div>
+      <div class="plan-box" onclick="comprarPlano('diamante')" role="button" tabindex="0">
+        <div>
+          <div style="font-weight:800">TOPO DA FILA</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.75)">Prioridade máxima</div>
         </div>
+        <div style="font-weight:800;color:var(--accent-2)">R$ 120,00</div>
+      </div>
 
-        <button class="close-button" onclick="fecharModalPlanos()">Fechar</button>
+      <button class="btn btn-ghost" onclick="fecharModalPlanos()" style="margin-top:8px">Fechar</button>
     </div>
-</div>
+  </div>
 
+  <script>
+    /* Modals handling helpers and accessibility states */
+    function abrirModalCompra(){
+      showModal('modalCompra');
+    }
+    function fecharModalCompra(){
+      hideModal('modalCompra');
+    }
+    function abrirModalPlanos(){
+      hideModal('modalConfirmacao');
+      showModal('modalPlanos');
+    }
+    function fecharModalPlanos(){
+      hideModal('modalPlanos');
+    }
+    function fecharModalConfirmacao(){
+      hideModal('modalConfirmacao');
+    }
 
-<script>
-/* Abrir Modal */
-function abrirModalCompra() {
-    document.getElementById('modalCompra').style.display = 'block';
-}
+    function showModal(id){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.style.display = 'flex';
+      el.setAttribute('aria-hidden','false');
+      // trap focus lightly (focus first button)
+      const btn = el.querySelector('button');
+      if(btn) btn.focus();
+    }
+    function hideModal(id){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.style.display = 'none';
+      el.setAttribute('aria-hidden','true');
+    }
 
-/* Fechar manual */
-function fecharModalCompra() {
-    document.getElementById('modalCompra').style.display = 'none';
-}
-
-/* Pagar com Pix */
-function finalizarPix() {
-    localStorage.setItem("voltouDoPix", "sim");
-
-    window.open(
+    /* Pix logic kept */
+    function finalizarPix() {
+      localStorage.setItem("voltouDoPix", "sim");
+      window.open(
         'https://app.pushinpay.com.br/#/service/pay/A05FFA83-F144-4CB9-911E-217FC18F1633',
         '_blank',
         'noopener,noreferrer'
-    );
-}
-
-/* Detecta voltar do checkout */
-document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) verificarRetornoDoPix();
-});
-window.addEventListener("pageshow", verificarRetornoDoPix);
-
-function verificarRetornoDoPix() {
-    if (localStorage.getItem("voltouDoPix") === "sim") {
-
-        localStorage.removeItem("voltouDoPix");
-
-        document.getElementById("modalCompra").style.display = "none";
-        document.getElementById("phoneSection").style.display = "block";
+      );
     }
-}
 
-/* Cadastrar número */
-function cadastrarNumero() {
-    let v = document.getElementById('phoneInput').value.trim();
-    if (v === "") {
+    /* detect return from checkout */
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) verificarRetornoDoPix();
+    });
+    window.addEventListener("pageshow", verificarRetornoDoPix);
+
+    function verificarRetornoDoPix() {
+      if (localStorage.getItem("voltouDoPix") === "sim") {
+        localStorage.removeItem("voltouDoPix");
+        hideModal('modalCompra');
+        document.getElementById("phoneSection").style.display = "block";
+      }
+    }
+
+    /* Cadastrar número */
+    function cadastrarNumero() {
+      let v = document.getElementById('phoneInput').value.trim();
+      if (v === "") {
         alert("Digite seu número!");
         return;
+      }
+
+      let fila = Math.floor(Math.random() * 1000) + 1;
+      document.getElementById("filaNumero").textContent = fila;
+
+      hideModal('modalCompra');
+      showModal('modalConfirmacao');
     }
 
-    let fila = Math.floor(Math.random() * 1000) + 1;
-    document.getElementById("filaNumero").textContent = fila;
-
-    document.getElementById("modalConfirmacao").style.display = "block";
-}
-
-/* Fechar popups */
-function fecharModalConfirmacao() {
-    document.getElementById("modalConfirmacao").style.display = "none";
-}
-
-function abrirModalPlanos() {
-    document.getElementById("modalConfirmacao").style.display = "none";
-    document.getElementById("modalPlanos").style.display = "block";
-}
-
-function fecharModalPlanos() {
-    document.getElementById("modalPlanos").style.display = "none";
-}
-
-/* Redirecionar planos */
-function comprarPlano(plano) {
-    const urls = {
+    /* plan redirects */
+    function comprarPlano(plano) {
+      const urls = {
         "turbo": "https://app.pushinpay.com.br/#/service/pay/A060EABC-B802-4DB7-A486-9CE2A857590E",
         "ultra": "https://app.pushinpay.com.br/#/service/pay/A060EBA7-8875-4996-929F-1070D3CD4A3E",
         "diamante": "https://app.pushinpay.com.br/#/service/pay/A060EC30-269F-472F-95D3-A9B576132828"
-    };
+      };
+      window.open(urls[plano], "_blank");
+    }
 
-    window.open(urls[plano], "_blank");
-}
+    /* phone mask */
+    (function(){
+      const input = document.getElementById("phoneInput");
+      if(!input) return;
+      input.addEventListener("input", function(e){
+        let v = e.target.value.replace(/\D/g, "");
+        if (v.length > 11) v = v.slice(0,11);
+        if (v.length >= 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+        else if (v.length >= 7) v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3");
+        else if (v.length >= 3) v = v.replace(/(\d{2})(\d{0,5})/, "($1) $2");
+        e.target.value = v;
+      });
+    })();
 
-/* Máscara */
-document.getElementById("phoneInput").addEventListener("input", function(e) {
-    let v = e.target.value.replace(/\D/g, "");
-    if (v.length >= 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
-    else if (v.length >= 7) v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3");
-    else if (v.length >= 3) v = v.replace(/(\d{2})(\d{0,5})/, "($1) $2");
-    e.target.value = v;
-});
-</script>
+    /* Accessibility: close modal with ESC */
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape'){
+        ['modalCompra','modalConfirmacao','modalPlanos'].forEach(hideModal);
+      }
+    });
 
+    /* Click outside modal to close */
+    document.querySelectorAll('.modal').forEach(function(m){
+      m.addEventListener('click', function(ev){
+        if(ev.target === m) m.style.display='none';
+      });
+    });
+  </script>
 </body>
 </html>

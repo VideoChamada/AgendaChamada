@@ -4,7 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Atendimento VIP - Vídeo Chamada</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root{
       --bg-1:#0a0f2c;
@@ -18,157 +20,128 @@
       --max-width:420px;
     }
 
-    /* Reset + base */
-    *{box-sizing:border-box}
+    *{ box-sizing:border-box }
     html,body{height:100%}
     body{
       margin:0;
+      background:linear-gradient(135deg,var(--bg-1),#11173d);
       font-family:'Poppins',sans-serif;
-      background: linear-gradient(135deg,var(--bg-1) 0%, #11173d 100%);
       color:white;
-      -webkit-font-smoothing:antialiased;
       display:flex;
-      align-items:flex-start;
       justify-content:center;
+      align-items:flex-start;
       padding:28px 16px;
       min-height:100vh;
+      -webkit-font-smoothing:antialiased;
     }
 
-    /* Top Header */
+    /* HEADER */
     .top-header{
       position:fixed;
-      left:0;
-      top:0;
+      top:0; left:0;
       width:100%;
       z-index:9999;
       display:flex;
       align-items:center;
-      gap:12px;
+      justify-content:space-between;
       padding:12px 18px;
-      background: linear-gradient(180deg, rgba(12,20,60,0.72), rgba(6,10,30,0.30));
+      background:linear-gradient(180deg,rgba(12,20,60,0.72),rgba(6,10,30,0.30));
+      backdrop-filter:blur(8px);
       border-bottom:1px solid rgba(30,75,255,0.08);
-      box-shadow: 0 8px 40px rgba(5,8,25,0.6), 0 0 22px rgba(30,75,255,0.06);
-      backdrop-filter: blur(8px);
-    }
-
-    .top-left{
-      display:flex;
-      align-items:center;
-      gap:12px;
+      box-shadow:0 8px 40px rgba(5,8,25,0.6);
     }
 
     .logo-header{
       height:56px;
-      width:auto;
-      max-width:260px;       /* controle lateral máximo */
       border-radius:14px;
+      max-width:260px;
       object-fit:cover;
+      background:rgba(255,255,255,0.03);
       padding:6px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      border: 1px solid rgba(255,255,255,0.05);
-      box-shadow: 0 6px 20px rgba(30,75,255,0.14);
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .logo-header:hover{ transform: translateY(-3px); box-shadow: 0 12px 30px rgba(30,75,255,0.22); }
-
-    /* Optional right area for header (placeholder) */
-    .header-right{
-      margin-left:auto;
-      display:flex;
-      gap:8px;
-      align-items:center;
+      border:1px solid rgba(255,255,255,0.05);
+      box-shadow:0 6px 20px rgba(30,75,255,0.14);
     }
 
     .badge{
-      font-size:13px;
       padding:8px 12px;
       border-radius:999px;
-      background: linear-gradient(90deg, rgba(30,75,255,0.14), rgba(0,212,255,0.06));
+      background:rgba(30,75,255,0.14);
       border:1px solid rgba(30,75,255,0.09);
+      font-size:13px;
       color:var(--muted);
     }
 
-    /* Main container */
     .page-wrap{
       width:100%;
       max-width:var(--max-width);
-      margin-top:92px; /* leave space for fixed header */
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding-bottom:36px;
+      margin-top:100px;
     }
 
     .container{
       width:100%;
       padding:22px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      background:rgba(255,255,255,0.02);
       border-radius:20px;
-      border: 1px solid rgba(30,75,255,0.06);
-      box-shadow: var(--neon-shadow);
+      border:1px solid rgba(30,75,255,0.06);
+      box-shadow:var(--neon-shadow);
       text-align:center;
     }
 
     .profile-image{
-      width:128px;
-      height:128px;
+      width:128px; height:128px;
       border-radius:50%;
       border: 4px solid rgba(30,75,255,0.16);
       background-size:cover;
       background-position:center;
-      margin: 6px auto 12px;
-      box-shadow: 0 8px 30px rgba(30,75,255,0.16);
+      margin:12px auto;
+      box-shadow:0 8px 30px rgba(30,75,255,0.16);
     }
 
-    h1.profile-name{
-      margin:6px 0 6px;
-      font-size:20px;
-      letter-spacing:0.2px;
-    }
-    p.profile-subtitle{
-      margin:0 0 16px;
+    /* ONLINE BOX */
+    #onlineBox{
+      margin:0 auto 15px;
+      padding:10px 14px;
+      width:fit-content;
+      border-radius:12px;
+      background:rgba(0,140,255,0.12);
+      border:1px solid rgba(0,140,255,0.25);
       font-size:14px;
-      color:rgba(255,255,255,0.85);
+      box-shadow:0 0 12px rgba(0,140,255,0.25);
+      backdrop-filter:blur(6px);
     }
 
-    /* Buttons */
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      border:0;
-      padding:14px 18px;
-      font-weight:700;
-      border-radius:14px;
-      cursor:pointer;
-      transition:transform .12s ease, box-shadow .12s ease;
-    }
-    .btn:active{ transform:translateY(1px) }
-
+    /* BUTTON PULSANTE */
     .btn-primary{
       width:100%;
-      background: linear-gradient(90deg, #1e4bff, #001aff);
-      box-shadow: 0 18px 40px rgba(30,75,255,0.16), 0 0 24px rgba(0,212,255,0.03) inset;
+      background:linear-gradient(90deg,#1e4bff,#003bff);
+      padding:18px 20px;
+      font-size:20px;
+      font-weight:800;
+      border:none;
+      border-radius:16px;
       color:white;
-      font-size:18px;
-    }
-    .btn-primary:hover{
-      transform:translateY(-3px);
-      box-shadow: 0 22px 48px rgba(30,75,255,0.22);
+      cursor:pointer;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+
+      box-shadow:
+        0 0 25px rgba(30,75,255,0.8),
+        0 0 55px rgba(0,140,255,0.5),
+        inset 0 0 18px rgba(255,255,255,0.22);
+
+      animation:pulsar 1.4s infinite ease-in-out;
+      transition:.2s;
     }
 
-    .btn-ghost{
-      width:100%;
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.08);
-      color:rgba(255,255,255,0.9);
-      font-weight:600;
-      padding:12px 16px;
-      border-radius:12px;
+    @keyframes pulsar{
+      0%{ transform:scale(1); box-shadow:0 0 20px rgba(30,75,255,0.7);}
+      50%{ transform:scale(1.06); box-shadow:0 0 45px rgba(30,75,255,1);}
+      100%{ transform:scale(1); box-shadow:0 0 20px rgba(30,75,255,0.7);}
     }
 
-    /* Phone section */
+    /* PHONE SECTION (inline form if needed) */
     .phone-section{
       display:none;
       margin-top:18px;
@@ -187,34 +160,54 @@
       font-size:15px;
       margin-bottom:12px;
       outline:none;
+      text-align:center;
     }
     .phone-input:focus{ box-shadow: 0 6px 28px rgba(30,75,255,0.06); border-color:var(--accent); }
 
-    /* Queue number */
-    .queue-number{
-      font-size:44px;
-      font-weight:800;
-      color:var(--accent-2);
-      margin:8px 0 12px;
-      letter-spacing:1px;
-      text-shadow: 0 6px 28px rgba(0,212,255,0.06);
+    /* POPUPS DE COMPRA */
+    #comprasPopupContainer{
+      position:fixed;
+      bottom:20px;
+      left:20px;
+      z-index:3000;
     }
 
-    /* Modals (centered) */
-    .modal{
+    .compra-popup{
+      background:rgba(30,75,255,0.20);
+      border:1px solid rgba(30,75,255,0.30);
+      padding:12px 16px;
+      border-radius:12px;
+      margin-top:12px;
+      font-size:14px;
+      opacity:0;
+      transform:translateX(-20px);
+      animation:popupIn .5s forwards;
+      box-shadow:0 8px 22px rgba(30,75,255,0.25);
+    }
+
+    @keyframes popupIn{
+      to{ opacity:1; transform:translateX(0); }
+    }
+
+    @keyframes popupOut{
+      to{ opacity:0; transform:translateX(-20px); }
+    }
+
+    /* MODALS GENERIC */
+    .modal {
       display:none;
       position:fixed;
       inset:0;
-      z-index:2000;
-      background: rgba(2,6,23,0.6);
-      backdrop-filter: blur(4px);
+      z-index:5000;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px);
       align-items:center;
       justify-content:center;
       padding:20px;
     }
-    .modal-content{
-      width:100%;
-      max-width:480px;
+    .modal-card{
+      width:90%;
+      max-width:420px;
       background: linear-gradient(180deg, #0f1550, #081033);
       border-radius:16px;
       padding:22px;
@@ -222,7 +215,6 @@
       box-shadow: 0 18px 60px rgba(2,8,40,0.8);
       text-align:center;
     }
-    .modal h2{ margin:6px 0 10px }
 
     .plan-box{
       display:flex;
@@ -235,16 +227,13 @@
       border:1px solid rgba(255,255,255,0.03);
       cursor:pointer;
     }
-    .plan-box:hover{ transform:translateY(-4px); box-shadow: 0 18px 46px rgba(30,75,255,0.08); }
 
-    /* small screens */
+    /* responsive tweaks */
     @media (max-width:420px){
       .logo-header{ height:48px; max-width:180px; border-radius:12px }
       .page-wrap{ margin-top:80px }
       .profile-image{ width:110px; height:110px }
-      .queue-number{ font-size:36px }
     }
-
     @media (max-width:340px){
       .logo-header{ max-width:160px; height:44px }
       .container{ padding:16px }
@@ -252,13 +241,13 @@
     }
   </style>
 </head>
+
 <body>
 
-  <!-- Header -->
+  <!-- HEADER -->
   <header class="top-header" role="banner">
-    <div class="top-left">
-      <img alt="Logo do site" class="logo-header" src="https://i.postimg.cc/TY7s55rJ/Chat-GPT-Image-17-de-nov-de-2025-11-51-23.png">
-      <!-- Small title near logo (optional) -->
+    <div style="display:flex;align-items:center;gap:12px">
+      <img src="https://i.postimg.cc/TY7s55rJ/Chat-GPT-Image-17-de-nov-de-2025-11-51-23.png" class="logo-header" alt="Logo">
       <div style="display:flex;flex-direction:column;line-height:1;">
         <div style="font-weight:700;font-size:15px">Atendimento VIP</div>
         <div style="font-size:12px;color:rgba(255,255,255,0.75)">Vídeo Chamada - WhatsApp</div>
@@ -266,172 +255,276 @@
     </div>
 
     <div class="header-right" aria-hidden="true">
-      <div class="badge">Online</div>
+      <div class="badge" id="badgeOnline">Online</div>
     </div>
   </header>
 
-  <!-- Page content -->
+  <!-- PAGE WRAP -->
   <div class="page-wrap">
-    <main class="container" role="main" aria-labelledby="profileHeading">
+    <div id="onlineBox">🔵 <span id="onlineNum">0</span> pessoas online agora</div>
 
+    <main class="container" role="main" aria-labelledby="profileHeading">
       <div class="profile-image" aria-hidden="true" style="background-image:url('https://i.postimg.cc/yx37DnFC/IMG-20251010-122706-764.jpg')"></div>
 
       <h1 id="profileHeading" class="profile-name">Chamada De Vídeo Whatsapp</h1>
-      <p class="profile-subtitle">E ainda leve <strong>65 Fotos</strong> e <strong>48 Vídeos</strong> de BRINDE! 👇👇👇</p>
+      <p class="profile-subtitle">E ainda leve <strong>65 Fotos</strong> e <strong>48 Vídeos</strong> de BRINDE!</p>
 
-      <button class="btn btn-primary" onclick="abrirModalCompra()" aria-label="Entrar na fila e pagar com PIX">
-        <span>WHATSAPP</span>
+      <!-- Botão pulsante principal -->
+      <button id="btnMain" class="btn-primary" onclick="abrirModalCompra()" aria-label="Entrar na fila e pagar com PIX">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" style="width:22px;">
+        FAZER CHAMADA
       </button>
 
+      <!-- Phone inline option (shows after returning if you want) -->
       <div id="phoneSection" class="phone-section" aria-hidden="true">
-        <h3 style="margin:0 0 10px">Digite seu número (WHATSAPP)</h3>
+        <h3 style="margin:6px 0 10px">Digite seu número (WHATSAPP)</h3>
         <input id="phoneInput" class="phone-input" type="tel" placeholder="(11) 99999-9999" aria-label="Telefone WhatsApp">
-        <button class="btn btn-primary" onclick="cadastrarNumero()">Cadastrar Número</button>
+        <button class="btn-primary" onclick="cadastrarNumero()">Cadastrar Número</button>
       </div>
-
     </main>
   </div>
 
-  <!-- Modal Compra -->
+  <!-- MODAL: Compra (abre para checkout) -->
   <div id="modalCompra" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal-content">
-      <h2>Vídeo-Chamada VIP</h2>
-      <p style="font-size:20px;margin:6px 0 8px;color:var(--accent-2);font-weight:700">R$ 65,00</p>
-      <button class="btn btn-primary" onclick="finalizarPix()">Pagar com Pix</button>
-      <button class="btn btn-ghost" onclick="fecharModalCompra()" style="margin-top:12px">Fechar</button>
+    <div class="modal-card">
+      <h2 style="margin:6px 0 10px">1 Hora De Chamada</h2>
+      <p style="color:rgba(255,255,255,0.8); margin:0 0 16px">Clique abaixo para efetuar o pagamento (Pix).</p>
+      <button class="btn-primary" onclick="irParaCheckout()">PAGAR NO PIX</button>
+      <button onclick="fecharModalCompra()" style="margin-top:12px;background:none;border:none;color:#fff8;font-size:15px">Cancelar</button>
     </div>
   </div>
 
-  <!-- Modal Confirmacao -->
+  <!-- MODAL: Confirmacao (após cadastrar número) -->
   <div id="modalConfirmacao" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal-content">
+    <div class="modal-card">
       <h2>Número cadastrado!</h2>
-      <p>Você será chamado em breve.</p>
-      <p style="margin-top:10px">Sua posição na fila:</p>
-      <div id="filaNumero" class="queue-number">...</div>
-      <button class="btn btn-primary" onclick="abrirModalPlanos()">Pular Fila 🚀</button>
-      <button class="btn btn-ghost" onclick="fecharModalConfirmacao()" style="margin-top:10px">Fechar</button>
+      <p style="color:rgba(255,255,255,0.8); margin:0 0 12px">Você será chamado em breve.</p>
+      <p style="margin:10px 0 8px">Sua posição na fila:</p>
+      <div id="filaNumero" style="font-size:40px;font-weight:800;color:var(--accent-2);margin-bottom:12px">...</div>
+      <button class="btn-primary" onclick="abrirModalPlanos()">Pular Fila 🚀</button>
+      <button onclick="fecharModalConfirmacao()" style="margin-top:10px;background:none;border:none;color:#fff8;font-size:15px">Fechar</button>
     </div>
   </div>
 
-  <!-- Modal Planos -->
+  <!-- MODAL: Planos -->
   <div id="modalPlanos" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal-content">
+    <div class="modal-card">
       <h2>Pular Fila</h2>
-
       <div class="plan-box" onclick="comprarPlano('turbo')" role="button" tabindex="0">
-        <div>
-          <div style="font-weight:800">Pular 10 posições</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.75)">Rápido e econômico</div>
-        </div>
+        <div><div style="font-weight:800">Pular 10 posições</div><div style="font-size:12px;color:rgba(255,255,255,0.75)">Rápido e econômico</div></div>
         <div style="font-weight:800;color:var(--accent-2)">R$ 9,00</div>
       </div>
-
       <div class="plan-box" onclick="comprarPlano('ultra')" role="button" tabindex="0">
-        <div>
-          <div style="font-weight:800">Pular 80 números</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.75)">Mais visibilidade</div>
-        </div>
+        <div><div style="font-weight:800">Pular 80 números</div><div style="font-size:12px;color:rgba(255,255,255,0.75)">Mais visibilidade</div></div>
         <div style="font-weight:800;color:var(--accent-2)">R$ 35,00</div>
       </div>
-
       <div class="plan-box" onclick="comprarPlano('diamante')" role="button" tabindex="0">
-        <div>
-          <div style="font-weight:800">TOPO DA FILA</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.75)">Prioridade máxima</div>
-        </div>
+        <div><div style="font-weight:800">TOPO DA FILA</div><div style="font-size:12px;color:rgba(255,255,255,0.75)">Prioridade máxima</div></div>
         <div style="font-weight:800;color:var(--accent-2)">R$ 120,00</div>
       </div>
 
-      <button class="btn btn-ghost" onclick="fecharModalPlanos()" style="margin-top:8px">Fechar</button>
+      <button onclick="fecharModalPlanos()" style="margin-top:8px;background:none;border:none;color:#fff8;font-size:15px">Fechar</button>
+    </div>
+  </div>
+
+  <!-- POPUPS DE COMPRA (canto inferior esquerdo) -->
+  <div id="comprasPopupContainer"></div>
+
+  <!-- POPUP CENTRAL: Pedir Número (aparece quando voltar do checkout se ainda NÃO cadastrou) -->
+  <div id="popupNumero" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);z-index:6000;justify-content:center;align-items:center;">
+    <div style="width:90%;max-width:360px;background:rgba(20,25,60,0.92);padding:25px;border-radius:18px;text-align:center;border:1px solid rgba(30,75,255,0.25);box-shadow:0 0 30px rgba(0,140,255,0.25);">
+      <h2 style="margin-top:0;font-size:22px;">Quase lá!</h2>
+      <p style="color:#fff8;font-size:15px;line-height:1.4;">Para continuar, adicione seu número para receber a chamada:</p>
+
+      <input id="numeroCliente" type="tel" placeholder="(11) 99999-9999" style="width:100%;margin-top:12px;padding:14px;font-size:16px;border-radius:12px;border:1px solid rgba(0,140,255,0.3);background:rgba(255,255,255,0.06);color:white;outline:none;text-align:center;">
+
+      <button onclick="salvarNumeroCliente()" class="btn-primary" style="margin-top:18px;">Confirmar Número</button>
+
+      <button onclick="fecharPopupNumero()" style="background:none;border:none;color:#fff8;margin-top:10px;font-size:14px;">Fechar</button>
     </div>
   </div>
 
   <script>
-    /* Modals handling helpers and accessibility states */
-    function abrirModalCompra(){
-      showModal('modalCompra');
-    }
-    function fecharModalCompra(){
-      hideModal('modalCompra');
-    }
-    function abrirModalPlanos(){
-      hideModal('modalConfirmacao');
-      showModal('modalPlanos');
-    }
-    function fecharModalPlanos(){
-      hideModal('modalPlanos');
-    }
-    function fecharModalConfirmacao(){
-      hideModal('modalConfirmacao');
-    }
-
-    function showModal(id){
+    /* ===========================
+       UTIL / MODAL HELPERS
+       =========================== */
+    function showModalId(id){
       const el = document.getElementById(id);
       if(!el) return;
-      el.style.display = 'flex';
+      el.style.display = "flex";
       el.setAttribute('aria-hidden','false');
-      // trap focus lightly (focus first button)
+      // focus first actionable element
       const btn = el.querySelector('button');
       if(btn) btn.focus();
     }
-    function hideModal(id){
+    function hideModalId(id){
       const el = document.getElementById(id);
       if(!el) return;
-      el.style.display = 'none';
+      el.style.display = "none";
       el.setAttribute('aria-hidden','true');
     }
 
-    /* Pix logic kept */
-    function finalizarPix() {
-      localStorage.setItem("voltouDoPix", "sim");
-      window.open(
-        'https://app.pushinpay.com.br/#/service/pay/A05FFA83-F144-4CB9-911E-217FC18F1633',
-        '_blank',
-        'noopener,noreferrer'
-      );
+    function abrirModalCompra(){ showModalId('modalCompra'); }
+    function fecharModalCompra(){ hideModalId('modalCompra'); }
+    function abrirModalPlanos(){ hideModalId('modalConfirmacao'); showModalId('modalPlanos'); }
+    function fecharModalPlanos(){ hideModalId('modalPlanos'); }
+    function fecharModalConfirmacao(){ hideModalId('modalConfirmacao'); }
+
+    /* ===========================
+       CHECKOUT / RETORNO LOGIC
+       =========================== */
+
+    // Função que realmente abre o checkout.
+    // Marca no localStorage que foi ao checkout (voltouDoPix) e abre o checkout em nova aba.
+    function irParaCheckout(){
+      // marque que foi ao checkout
+      try{ localStorage.setItem('voltouDoPix','sim'); } catch(e){}
+      // abra o checkout em nova aba (mantendo nossa página aberta)
+      window.open('https://app.pushinpay.com.br/#/service/pay/A05FFA83-F144-4CB9-911E-217FC18F1633?retorno=1', '_blank', 'noopener,noreferrer');
+      // fechar modal de compra localmente
+      fecharModalCompra();
     }
 
-    /* detect return from checkout */
-    document.addEventListener("visibilitychange", function () {
-      if (!document.hidden) verificarRetornoDoPix();
-    });
-    window.addEventListener("pageshow", verificarRetornoDoPix);
-
-    function verificarRetornoDoPix() {
-      if (localStorage.getItem("voltouDoPix") === "sim") {
-        localStorage.removeItem("voltouDoPix");
-        hideModal('modalCompra');
-        document.getElementById("phoneSection").style.display = "block";
-      }
+    // Versão antiga usada por botões diretos (mantida)
+    function finalizarPix(){
+      // marcar e abrir (caso alguns botões chamem diretamente)
+      try{ localStorage.setItem('voltouDoPix','sim'); } catch(e){}
+      window.open('https://app.pushinpay.com.br/#/service/pay/A05FFA83-F144-4CB9-911E-217FC18F1633?retorno=1', '_blank', 'noopener,noreferrer');
     }
 
-    /* Cadastrar número */
-    function cadastrarNumero() {
-      let v = document.getElementById('phoneInput').value.trim();
-      if (v === "") {
-        alert("Digite seu número!");
+    // Função que verifica se o usuário "voltou do Pix".
+    // Condições para abrir o popupNumero IMEDIATAMENTE (comportamento que você pediu):
+    // - Só abrir se o usuário NÃO tiver já cadastrado um número (localStorage 'numeroCliente' ausente)
+    // - Detectar via:
+    //    a) URL param ?retorno=1  (caso o checkout redirecione com esse parametro)
+    //    b) Ou localStorage 'voltouDoPix' === 'sim' (quando abrimos checkout em nova aba)
+    function verificarRetornoDoPixAndMostrarPopup(){
+      let jaTem = null;
+      try{ jaTem = localStorage.getItem('numeroCliente'); } catch(e){}
+      if(jaTem && jaTem.length > 2){
+        // já cadastrou, não mostrar popup
+        // opcional: mostrar phoneSection ou confirmação rápida (mantido invisível para não incomodar)
         return;
       }
 
-      let fila = Math.floor(Math.random() * 1000) + 1;
-      document.getElementById("filaNumero").textContent = fila;
+      // check URL param
+      const params = new URLSearchParams(window.location.search || location.search);
+      const retornoParam = params.get('retorno');
 
-      hideModal('modalCompra');
-      showModal('modalConfirmacao');
+      // check localStorage flag set before opening checkout
+      let flag = null;
+      try{ flag = localStorage.getItem('voltouDoPix'); } catch(e){}
+
+      if(retornoParam === '1' || flag === 'sim'){
+        // limpar flag
+        try{ localStorage.removeItem('voltouDoPix'); } catch(e){}
+        // abrir popup imediatamente
+        abrirPopupNumero();
+      }
     }
 
-    /* plan redirects */
-    function comprarPlano(plano) {
+    // Run on load
+    window.addEventListener('pageshow', function(){
+      verificarRetornoDoPixAndMostrarPopup();
+    });
+    document.addEventListener('visibilitychange', function(){
+      if(!document.hidden) verificarRetornoDoPixAndMostrarPopup();
+    });
+
+    /* ===========================
+       SALVAR NÚMERO / FORM
+       =========================== */
+
+    function abrirPopupNumero(){ document.getElementById('popupNumero').style.display='flex'; }
+    function fecharPopupNumero(){ document.getElementById('popupNumero').style.display='none'; }
+
+    function salvarNumeroCliente(){
+      const el = document.getElementById('numeroCliente');
+      if(!el) return;
+      const numero = el.value.trim();
+      // validações simples (mínimo 9 caracteres de dígitos)
+      const digitos = numero.replace(/\D/g,'');
+      if(digitos.length < 9){
+        alert('Digite um número válido (ex: (11) 99999-9999).');
+        return;
+      }
+      try{ localStorage.setItem('numeroCliente', numero); } catch(e){}
+      fecharPopupNumero();
+      // exibir confirmação modal
+      document.getElementById('filaNumero').textContent = Math.floor(Math.random()*1000)+1;
+      showModalId('modalConfirmacao');
+    }
+
+    // função chamada pelo botão "Cadastrar Número" inline (phoneSection)
+    function cadastrarNumero(){
+      const el = document.getElementById('phoneInput');
+      if(!el) return alert('Digite seu número!');
+      const numero = el.value.trim();
+      const digitos = numero.replace(/\D/g,'');
+      if(digitos.length < 9){
+        alert('Digite um número válido.');
+        return;
+      }
+      try{ localStorage.setItem('numeroCliente', numero); } catch(e){}
+      document.getElementById('filaNumero').textContent = Math.floor(Math.random()*1000)+1;
+      showModalId('modalConfirmacao');
+    }
+
+    /* ===========================
+       PLANO REDIRECIONAMENTO
+       =========================== */
+    function comprarPlano(plano){
       const urls = {
         "turbo": "https://app.pushinpay.com.br/#/service/pay/A060EABC-B802-4DB7-A486-9CE2A857590E",
         "ultra": "https://app.pushinpay.com.br/#/service/pay/A060EBA7-8875-4996-929F-1070D3CD4A3E",
         "diamante": "https://app.pushinpay.com.br/#/service/pay/A060EC30-269F-472F-95D3-A9B576132828"
       };
-      window.open(urls[plano], "_blank");
+      try{ localStorage.setItem('voltouDoPix','sim'); } catch(e){}
+      window.open(urls[plano] + '?retorno=1', '_blank', 'noopener,noreferrer');
     }
 
-    /* phone mask */
+    /* ===========================
+       ONLINE COUNTER (realista)
+       =========================== */
+    function gerarOnline(){
+      const online = Math.floor(Math.random()*60)+20; // 20-79
+      document.getElementById('onlineNum').textContent = online;
+    }
+    setInterval(gerarOnline, 5000);
+    gerarOnline();
+
+    /* ===========================
+       POPUPS ALEATÓRIOS DE COMPRA
+       =========================== */
+    const nomesBrasileiros = [
+      "João Pedro", "Gabriel Souza", "Lucas Almeida", "Felipe Martins",
+      "Mateus Silva", "Rafael Ribeiro", "Gustavo Oliveira", "Bruno Fernandes",
+      "Daniel Costa", "Thiago Duarte", "Leonardo Mendes", "Caio Andrade",
+      "Henrique Lopes", "Diego Barbosa", "Eduardo Santos", "André Monteiro",
+      "Murilo Rocha", "Otávio Nunes", "Samuel Freitas", "Victor Azevedo",
+      "Alexandre Peixoto", "Igor Cardoso", "Jonathan Vieira", "Marcelo Lima"
+    ];
+
+    function gerarCompraAleatoria(){
+      const nome = nomesBrasileiros[Math.floor(Math.random()*nomesBrasileiros.length)];
+      const container = document.getElementById("comprasPopupContainer");
+      if(!container) return;
+      const popup = document.createElement("div");
+      popup.className = "compra-popup";
+      popup.innerText = `${nome} acabou de comprar 🔥`;
+      container.appendChild(popup);
+      // remove depois de 5s
+      setTimeout(()=>{
+        popup.style.animation = "popupOut .5s forwards";
+        setTimeout(()=> popup.remove(), 500);
+      }, 5000);
+    }
+    setInterval(gerarCompraAleatoria, 12000);
+    setTimeout(gerarCompraAleatoria, 4000);
+
+    /* ===========================
+       PHONE MASK (inline)
+       =========================== */
     (function(){
       const input = document.getElementById("phoneInput");
       if(!input) return;
@@ -445,19 +538,36 @@
       });
     })();
 
-    /* Accessibility: close modal with ESC */
+    /* ===========================
+       ACCESSIBILIDADE / FECHAR COM ESC / CLICK OUTSIDE
+       =========================== */
     document.addEventListener('keydown', function(e){
       if(e.key === 'Escape'){
-        ['modalCompra','modalConfirmacao','modalPlanos'].forEach(hideModal);
+        ['modalCompra','modalConfirmacao','modalPlanos'].forEach(id=>{
+          const el = document.getElementById(id);
+          if(el) el.style.display='none';
+        });
+        // also popupNumero
+        document.getElementById('popupNumero').style.display='none';
       }
     });
 
-    /* Click outside modal to close */
+    // clicar fora dos modais fecha
     document.querySelectorAll('.modal').forEach(function(m){
       m.addEventListener('click', function(ev){
         if(ev.target === m) m.style.display='none';
       });
     });
+
+    /* ===========================
+       Behavior on initial load: also check retorno flag immediately
+       =========================== */
+    window.addEventListener('load', function(){
+      // show popupNumero immediately if returning & number not set (per your choice: IMEDIATO)
+      verificarRetornoDoPixAndMostrarPopup();
+    });
+
+    // pageshow / visibilitychange also handled above
   </script>
 </body>
 </html>

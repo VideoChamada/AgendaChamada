@@ -136,9 +136,9 @@
     }
 
     @keyframes pulsar{
-      0%{ transform:scale(1); box-shadow:0 0 20px rgba(30,75,255,0.7);}
-      50%{ transform:scale(1.06); box-shadow:0 0 45px rgba(30,75,255,1);}
-      100%{ transform:scale(1); box-shadow:0 0 20px rgba(30,75,255,0.7);}
+     0%{ transform:scale(1); box-shadow:0 0 20px rgba(30,75,255,0.7);}
+     50%{ transform:scale(1.06); box-shadow:0 0 45px rgba(30,75,255,1);}
+     100%{ transform:scale(1); box-shadow:0 0 20px rgba(30,75,255,0.7);}
     }
 
     /* PHONE SECTION (inline form if needed) */
@@ -343,231 +343,146 @@
       <button onclick="fecharPopupNumero()" style="background:none;border:none;color:#fff8;margin-top:10px;font-size:14px;">Fechar</button>
     </div>
   </div>
+<script>
+/* ===========================
+   UTIL / MODAL HELPERS
+   =========================== */
+function showModalId(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.style.display = "flex";
+  el.setAttribute('aria-hidden','false');
+}
+function hideModalId(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.style.display = "none";
+  el.setAttribute('aria-hidden','true');
+}
 
-  <script>
-    /* ===========================
-       UTIL / MODAL HELPERS
-       =========================== */
-    function showModalId(id){
-      const el = document.getElementById(id);
-      if(!el) return;
-      el.style.display = "flex";
-      el.setAttribute('aria-hidden','false');
-      // focus first actionable element
-      const btn = el.querySelector('button');
-      if(btn) btn.focus();
-    }
-    function hideModalId(id){
-      const el = document.getElementById(id);
-      if(!el) return;
-      el.style.display = "none";
-      el.setAttribute('aria-hidden','true');
-    }
+function abrirModalCompra(){ showModalId('modalCompra'); }
+function fecharModalCompra(){ hideModalId('modalCompra'); }
+function abrirModalPlanos(){ hideModalId('modalConfirmacao'); showModalId('modalPlanos'); }
+function fecharModalPlanos(){ hideModalId('modalPlanos'); }
+function fecharModalConfirmacao(){ hideModalId('modalConfirmacao'); }
 
-    function abrirModalCompra(){ showModalId('modalCompra'); }
-    function fecharModalCompra(){ hideModalId('modalCompra'); }
-    function abrirModalPlanos(){ hideModalId('modalConfirmacao'); showModalId('modalPlanos'); }
-    function fecharModalPlanos(){ hideModalId('modalPlanos'); }
-    function fecharModalConfirmacao(){ hideModalId('modalConfirmacao'); }
+/* ===========================
+   CHECKOUT → RETORNO
+   =========================== */
 
-    /* ===========================
-       CHECKOUT / RETORNO LOGIC
-       =========================== */
+// ABRE O CHECKOUT CORRETO (SEM TROCAR SEU LINK)
+function irParaCheckout(){
+  // Apenas marca que saiu, SEMPRE
+  sessionStorage.setItem("saiuDoCheckout", "1");
 
-    // Função que realmente abre o checkout.
-    // Marca no localStorage que foi ao checkout (voltouDoPix) e abre o checkout em nova aba.
-    function irParaCheckout(){
-      // marque que foi ao checkout
-      try{ localStorage.setItem('voltouDoPix','sim'); } catch(e){}
-      // abra o checkout em nova aba (mantendo nossa página aberta)
-      window.open('https://app.pushinpay.com.br/#/service/pay/A05FFA83-F144-4CB9-911E-217FC18F1633?retorno=1', '_blank', 'noopener,noreferrer');
-      // fechar modal de compra localmente
-      fecharModalCompra();
-    }
+  // Abre checkout em nova aba
+  window.open(
+    'https://app.pushinpay.com.br/#/service/pay/A05FFA83-F144-4CB9-911E-217FC18F1633',
+    '_blank'
+  );
 
-    // Versão antiga usada por botões diretos (mantida)
-    function finalizarPix(){
-      // marcar e abrir (caso alguns botões chamem diretamente)
-      try{ localStorage.setItem('voltouDoPix','sim'); } catch(e){}
-      window.open('https://app.pushinpay.com.br/#/service/pay/A05FFA83-F144-4CB9-911E-217FC18F1633?retorno=1', '_blank', 'noopener,noreferrer');
-    }
+  fecharModalCompra();
+}
 
-    // Função que verifica se o usuário "voltou do Pix".
-    // Condições para abrir o popupNumero IMEDIATAMENTE (comportamento que você pediu):
-    // - Só abrir se o usuário NÃO tiver já cadastrado um número (localStorage 'numeroCliente' ausente)
-    // - Detectar via:
-    //    a) URL param ?retorno=1  (caso o checkout redirecione com esse parametro)
-    //    b) Ou localStorage 'voltouDoPix' === 'sim' (quando abrimos checkout em nova aba)
-    function verificarRetornoDoPixAndMostrarPopup(){
-      let jaTem = null;
-      try{ jaTem = localStorage.getItem('numeroCliente'); } catch(e){}
-      if(jaTem && jaTem.length > 2){
-        // já cadastrou, não mostrar popup
-        // opcional: mostrar phoneSection ou confirmação rápida (mantido invisível para não incomodar)
-        return;
-      }
+// SEMPRE que voltar para o site → abre o popup
+function verificarRetorno(){
+  const flag = sessionStorage.getItem("saiuDoCheckout");
 
-      // check URL param
-      const params = new URLSearchParams(window.location.search || location.search);
-      const retornoParam = params.get('retorno');
+  if(flag){
+    abrirPopupNumero();
 
-      // check localStorage flag set before opening checkout
-      let flag = null;
-      try{ flag = localStorage.getItem('voltouDoPix'); } catch(e){}
+    // NÃO limpa o flag → assim sempre abre
+    // sessionStorage.removeItem("saiuDoCheckout");
+  }
+}
 
-      if(retornoParam === '1' || flag === 'sim'){
-        // limpar flag
-        try{ localStorage.removeItem('voltouDoPix'); } catch(e){}
-        // abrir popup imediatamente
-        abrirPopupNumero();
-      }
-    }
+window.addEventListener("focus", verificarRetorno);
+window.addEventListener("pageshow", verificarRetorno);
+window.addEventListener("visibilitychange", () => {
+  if(!document.hidden) verificarRetorno();
+});
+window.addEventListener("load", verificarRetorno);
 
-    // Run on load
-    window.addEventListener('pageshow', function(){
-      verificarRetornoDoPixAndMostrarPopup();
-    });
-    document.addEventListener('visibilitychange', function(){
-      if(!document.hidden) verificarRetornoDoPixAndMostrarPopup();
-    });
+/* ===========================
+   POPUP QUASE LÁ
+   =========================== */
+function abrirPopupNumero(){
+  document.getElementById("popupNumero").style.display = "flex";
+}
+function fecharPopupNumero(){
+  document.getElementById("popupNumero").style.display = "none";
+}
 
-    /* ===========================
-       SALVAR NÚMERO / FORM
-       =========================== */
+function salvarNumeroCliente(){
+  const el = document.getElementById('numeroCliente');
+  const numero = el.value.trim();
+  const digitos = numero.replace(/\D/g,'');
 
-    function abrirPopupNumero(){ document.getElementById('popupNumero').style.display='flex'; }
-    function fecharPopupNumero(){ document.getElementById('popupNumero').style.display='none'; }
+  if(digitos.length < 9){
+    alert("Digite um número válido.");
+    return;
+  }
 
-    function salvarNumeroCliente(){
-      const el = document.getElementById('numeroCliente');
-      if(!el) return;
-      const numero = el.value.trim();
-      // validações simples (mínimo 9 caracteres de dígitos)
-      const digitos = numero.replace(/\D/g,'');
-      if(digitos.length < 9){
-        alert('Digite um número válido (ex: (11) 99999-9999).');
-        return;
-      }
-      try{ localStorage.setItem('numeroCliente', numero); } catch(e){}
-      fecharPopupNumero();
-      // exibir confirmação modal
-      document.getElementById('filaNumero').textContent = Math.floor(Math.random()*1000)+1;
-      showModalId('modalConfirmacao');
-    }
+  fecharPopupNumero();
 
-    // função chamada pelo botão "Cadastrar Número" inline (phoneSection)
-    function cadastrarNumero(){
-      const el = document.getElementById('phoneInput');
-      if(!el) return alert('Digite seu número!');
-      const numero = el.value.trim();
-      const digitos = numero.replace(/\D/g,'');
-      if(digitos.length < 9){
-        alert('Digite um número válido.');
-        return;
-      }
-      try{ localStorage.setItem('numeroCliente', numero); } catch(e){}
-      document.getElementById('filaNumero').textContent = Math.floor(Math.random()*1000)+1;
-      showModalId('modalConfirmacao');
-    }
+  document.getElementById('filaNumero').textContent =
+    Math.floor(Math.random()*1000)+1;
 
-    /* ===========================
-       PLANO REDIRECIONAMENTO
-       =========================== */
-    function comprarPlano(plano){
-      const urls = {
-        "turbo": "https://app.pushinpay.com.br/#/service/pay/A060EABC-B802-4DB7-A486-9CE2A857590E",
-        "ultra": "https://app.pushinpay.com.br/#/service/pay/A060EBA7-8875-4996-929F-1070D3CD4A3E",
-        "diamante": "https://app.pushinpay.com.br/#/service/pay/A060EC30-269F-472F-95D3-A9B576132828"
-      };
-      try{ localStorage.setItem('voltouDoPix','sim'); } catch(e){}
-      window.open(urls[plano] + '?retorno=1', '_blank', 'noopener,noreferrer');
-    }
+  showModalId('modalConfirmacao');
+}
 
-    /* ===========================
-       ONLINE COUNTER (realista)
-       =========================== */
-    function gerarOnline(){
-      const online = Math.floor(Math.random()*60)+20; // 20-79
-      document.getElementById('onlineNum').textContent = online;
-    }
-    setInterval(gerarOnline, 5000);
-    gerarOnline();
+/* ===========================
+   PLANO REDIRECIONAMENTO
+   =========================== */
+function comprarPlano(plano){
+  const urls = {
+    "turbo":    "https://app.pushinpay.com.br/#/service/pay/A060EABC-B802-4DB7-A486-9CE2A857590E",
+    "ultra":    "https://app.pushinpay.com.br/#/service/pay/A060EBA7-8875-4996-929F-1070D3CD4A3E",
+    "diamante": "https://app.pushinpay.com.br/#/service/pay/A060EC30-269F-472F-95D3-A9B576132828"
+  };
 
-    /* ===========================
-       POPUPS ALEATÓRIOS DE COMPRA
-       =========================== */
-    const nomesBrasileiros = [
-      "João Pedro", "Gabriel Souza", "Lucas Almeida", "Felipe Martins",
-      "Mateus Silva", "Rafael Ribeiro", "Gustavo Oliveira", "Bruno Fernandes",
-      "Daniel Costa", "Thiago Duarte", "Leonardo Mendes", "Caio Andrade",
-      "Henrique Lopes", "Diego Barbosa", "Eduardo Santos", "André Monteiro",
-      "Murilo Rocha", "Otávio Nunes", "Samuel Freitas", "Victor Azevedo",
-      "Alexandre Peixoto", "Igor Cardoso", "Jonathan Vieira", "Marcelo Lima"
-    ];
+  // Marca que saiu
+  sessionStorage.setItem("saiuDoCheckout", "1");
 
-    function gerarCompraAleatoria(){
-      const nome = nomesBrasileiros[Math.floor(Math.random()*nomesBrasileiros.length)];
-      const container = document.getElementById("comprasPopupContainer");
-      if(!container) return;
-      const popup = document.createElement("div");
-      popup.className = "compra-popup";
-      popup.innerText = `${nome} acabou de comprar 🔥`;
-      container.appendChild(popup);
-      // remove depois de 5s
-      setTimeout(()=>{
-        popup.style.animation = "popupOut .5s forwards";
-        setTimeout(()=> popup.remove(), 500);
-      }, 5000);
-    }
-    setInterval(gerarCompraAleatoria, 12000);
-    setTimeout(gerarCompraAleatoria, 4000);
+  window.open(urls[plano], "_blank");
+}
 
-    /* ===========================
-       PHONE MASK (inline)
-       =========================== */
-    (function(){
-      const input = document.getElementById("phoneInput");
-      if(!input) return;
-      input.addEventListener("input", function(e){
-        let v = e.target.value.replace(/\D/g, "");
-        if (v.length > 11) v = v.slice(0,11);
-        if (v.length >= 11) v = v.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
-        else if (v.length >= 7) v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3");
-        else if (v.length >= 3) v = v.replace(/(\d{2})(\d{0,5})/, "($1) $2");
-        e.target.value = v;
-      });
-    })();
+/* ===========================
+   CONTADOR ONLINE
+   =========================== */
+function gerarOnline(){
+  const online = Math.floor(Math.random()*60)+20;
+  document.getElementById('onlineNum').textContent = online;
+}
+setInterval(gerarOnline, 5000);
+gerarOnline();
 
-    /* ===========================
-       ACCESSIBILIDADE / FECHAR COM ESC / CLICK OUTSIDE
-       =========================== */
-    document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape'){
-        ['modalCompra','modalConfirmacao','modalPlanos'].forEach(id=>{
-          const el = document.getElementById(id);
-          if(el) el.style.display='none';
-        });
-        // also popupNumero
-        document.getElementById('popupNumero').style.display='none';
-      }
-    });
+/* ===========================
+   POPUPS DE COMPRA ALEATÓRIO
+   =========================== */
+const nomesBrasileiros = [
+  "João Pedro","Gabriel Souza","Lucas Almeida","Felipe Martins",
+  "Mateus Silva","Rafael Ribeiro","Gustavo Oliveira","Bruno Fernandes",
+  "Daniel Costa","Thiago Duarte","Leonardo Mendes","Caio Andrade",
+  "Henrique Lopes","Diego Barbosa","Eduardo Santos","André Monteiro",
+  "Murilo Rocha","Otávio Nunes","Samuel Freitas","Victor Azevedo",
+  "Alexandre Peixoto","Igor Cardoso","Jonathan Vieira","Marcelo Lima"
+];
 
-    // clicar fora dos modais fecha
-    document.querySelectorAll('.modal').forEach(function(m){
-      m.addEventListener('click', function(ev){
-        if(ev.target === m) m.style.display='none';
-      });
-    });
+function gerarCompraAleatoria(){
+  const nome = nomesBrasileiros[Math.floor(Math.random()*nomesBrasileiros.length)];
+  const container = document.getElementById("comprasPopupContainer");
+  const popup = document.createElement("div");
+  popup.className = "compra-popup";
+  popup.innerText = `${nome} acabou de comprar 🔥`;
+  container.appendChild(popup);
+  setTimeout(()=>{
+    popup.style.animation = "popupOut .5s forwards";
+    setTimeout(()=> popup.remove(), 500);
+  },5000);
+}
+setInterval(gerarCompraAleatoria, 12000);
+setTimeout(gerarCompraAleatoria, 4000);
+</script>
 
-    /* ===========================
-       Behavior on initial load: also check retorno flag immediately
-       =========================== */
-    window.addEventListener('load', function(){
-      // show popupNumero immediately if returning & number not set (per your choice: IMEDIATO)
-      verificarRetornoDoPixAndMostrarPopup();
-    });
-
-    // pageshow / visibilitychange also handled above
-  </script>
-</body>
-</html>
+  
